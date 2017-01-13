@@ -1,6 +1,8 @@
 <?php
             $keywords = @$_GET["keywords"];
-            
+            $pageNum = @$_GET["pageNum"];
+            $pageNum = $pageNum < 1 ? 1 : $pageNum;//Syntax error
+
             $servername = "localhost";
             $username = "username";
             $password = "";
@@ -13,7 +15,20 @@
             }
             //echo "连接成功";
 
-            $sql = " SELECT * FROM tbd_goods WHERE name LIKE '%$keywords%' ";
+            $pageSize = 5;
+            $startIndex = ($pageNum-1) * $pageSize;
+            //$sql2 = " SELECT * FROM tbd_goods LIMIT $startIndex, $pageSize ";
+            //echo $sql2;
+            $count = $conn->query(" SELECT COUNT(*) FROM tbd_goods ");
+            $countRow = $count->fetch_row();
+            if($countRow) {
+                $totalCount = $countRow[0];
+                //echo $totalCount;
+            }
+            $totalPage = ceil($totalCount/$pageSize);
+            //echo $totalPage;
+
+            $sql = " SELECT * FROM tbd_goods WHERE name LIKE '%$keywords%' LIMIT $startIndex, $pageSize ";
             $result = $conn->query($sql);
 ?>
 
@@ -55,6 +70,10 @@
                     ?>
                 </tobody>
             </table>
+            <div style="margin-top:30px">
+                <a href="index.php?pageNum=<?php echo $pageNum == 1 ? $pageNum : $pageNum-1 ?>">上一页</a><!--拼接URL不要括号，三段式判断避免URL栏错误-->
+                <a href="index.php?pageNum=<?php echo $pageNum == $totalPage ? $totalPage : $pageNum+1 ?>">下一页</a>
+            </div>
         </div>
 
         <form action="update.php" method="get">

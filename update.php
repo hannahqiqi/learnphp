@@ -7,4 +7,4 @@
     $sql = " UPDATE tbd_goods SET name='$name', price=$price WHERE id=$id ";
     $results = $conn->query($sql);
 
-    header("Location: http://localhost:8099/blog/index.php");
+    header("Location: http://localhost:8099/goods/learnphp/index.php");

@@ -5,4 +5,4 @@
     $sql = " DELETE FROM tbd_goods WHERE id = '$id' ";
     $results = $conn->query($sql);
 
-    header("Location: http://localhost:8099/blog/index.php");
+    header("Location: http://localhost:8099/goods/learnphp/index.php");
